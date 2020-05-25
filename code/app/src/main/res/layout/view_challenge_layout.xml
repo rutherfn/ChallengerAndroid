@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/cnsLayoutChallenge"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivChallenge"
+        android:layout_width="90sp"
+        android:layout_height="90sp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10sp"
+        android:layout_marginLeft="10sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/tvChallengeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:text="@string/app_name"
+        android:paddingLeft="10sp"
+        android:paddingStart="10sp"
+        android:textSize="20sp"
+        tools:ignore="RtlSymmetry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivChallenge"
+        app:layout_constraintTop_toTopOf="@+id/ivChallenge" />
+
+    <TextView
+        android:id="@+id/tvChallengeDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:textSize="14sp"
+        android:text="dada"
+        android:paddingLeft="10sp"
+        android:paddingStart="10sp"
+        tools:ignore="RtlSymmetry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvChallengeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvChallengeTitle" />
+
+    <TextView
+        android:id="@+id/tvChallengeCategory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:textSize="14sp"
+        android:text="dada"
+        android:paddingLeft="10sp"
+        android:paddingStart="10sp"
+        tools:ignore="RtlSymmetry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvChallengeDesc"
+        app:layout_constraintTop_toBottomOf="@+id/tvChallengeDesc" />
+
+    <TextView
+        android:id="@+id/tvEditOrDeleteChallenge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click Me To Edit"
+        android:layout_marginTop="10sp"
+        android:paddingLeft="10sp"
+        android:paddingStart="10sp"
+        android:textColor="#228B22"
+        tools:ignore="RtlSymmetry"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tvChallengeCategory"
+        app:layout_constraintTop_toBottomOf="@+id/tvChallengeCategory" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
