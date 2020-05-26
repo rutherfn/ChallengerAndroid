@@ -25,7 +25,7 @@ public class MainAdapt extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.challenger_main_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_endpoints_layout, parent, false);
         return new MainViewHolder(itemView);
     }
 

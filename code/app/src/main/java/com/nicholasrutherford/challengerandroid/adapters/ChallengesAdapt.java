@@ -35,7 +35,11 @@ public class ChallengesAdapt extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return challenges.size();
+        if(challenges == null) {
+            return 0;
+        }else {
+            return challenges.size();
+        }
     }
 
 }

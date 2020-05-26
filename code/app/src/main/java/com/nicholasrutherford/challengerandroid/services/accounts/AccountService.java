@@ -1,4 +1,4 @@
-package com.nicholasrutherford.challengerandroid.services;
+package com.nicholasrutherford.challengerandroid.services.accounts;
 
 import com.nicholasrutherford.challengerandroid.data.Account;
 import java.util.List;

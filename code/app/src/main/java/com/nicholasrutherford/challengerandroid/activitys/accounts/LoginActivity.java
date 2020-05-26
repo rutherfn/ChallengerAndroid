@@ -9,11 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.activitys.MainActivity;
+import com.nicholasrutherford.challengerandroid.alerts.LoadingDialogFragment;
 import com.nicholasrutherford.challengerandroid.data.Account;
 import com.nicholasrutherford.challengerandroid.services.APIUtils;
-import com.nicholasrutherford.challengerandroid.services.AccountService;
+import com.nicholasrutherford.challengerandroid.services.accounts.AccountService;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -23,6 +25,8 @@ import retrofit2.Response;
 public class LoginActivity  extends AppCompatActivity {
 
     // declarations
+    FragmentManager fm = getSupportFragmentManager();
+    LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
     AccountService accountService;
     CircleImageView ivChallenge;
     TextView tvLogin;
@@ -66,7 +70,7 @@ public class LoginActivity  extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Account>> call, Throwable t) {
-                System.out.println("Failed");
+                dismissLoadingDialog();
             }
         });
     }
@@ -75,6 +79,7 @@ public class LoginActivity  extends AppCompatActivity {
         logInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showLoadingDialog();
                 fetchAccounts();
             }
         });
@@ -83,9 +88,11 @@ public class LoginActivity  extends AppCompatActivity {
     private void checkEditorText(Response<List<Account>> response) {
         if(response.body().get(1).username.equals(etUsername.getText().toString()) &&
         response.body().get(1).password.equals(etPassword.getText().toString())) {
+            dismissLoadingDialog();
             startMainActivity();
             clearUI();
         } else  {
+            dismissLoadingDialog();
             fireUpAlertForWrongCredentials();
             clearUI();
         }
@@ -108,6 +115,14 @@ public class LoginActivity  extends AppCompatActivity {
                     }
                 });
         alertDialog.show();
+    }
+
+    private void showLoadingDialog() {
+        loadingDialog.show(fm, "loading dialog");
+    }
+
+    private void dismissLoadingDialog() {
+        loadingDialog.dismiss();
     }
 
 }

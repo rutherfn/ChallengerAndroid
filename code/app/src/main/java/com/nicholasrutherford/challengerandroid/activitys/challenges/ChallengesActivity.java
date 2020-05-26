@@ -17,8 +17,9 @@ import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.activitys.accounts.LoginActivity;
 import com.nicholasrutherford.challengerandroid.adapters.ChallengesAdapt;
 import com.nicholasrutherford.challengerandroid.data.Challenge;
+import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
 import com.nicholasrutherford.challengerandroid.services.APIUtils;
-import com.nicholasrutherford.challengerandroid.services.ChallengeService;
+import com.nicholasrutherford.challengerandroid.services.challenges.ChallengeService;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class ChallengesActivity extends AppCompatActivity {
     private ChallengesAdapt mainView;
     private ChallengeService challengeService;
     private Button btnAddAChallengeBtn;
+    private TypefaceHelper typefaceHelper = new TypefaceHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class ChallengesActivity extends AppCompatActivity {
     private void main() {
         challengeService = APIUtils.getChallengeService();
         setUpIds();
+        setUpTypeface();
         setFocusAndNestedRecycler();
         grabAllChallengesInitAdapter();
         createAChallenge();
@@ -51,6 +54,10 @@ public class ChallengesActivity extends AppCompatActivity {
     private void setUpIds() {
         rvMain = findViewById(R.id.rvMain);
         btnAddAChallengeBtn = findViewById(R.id.btnAddChallenge);
+    }
+
+    private void setUpTypeface() {
+        typefaceHelper.setTypefaceOfHeader(btnAddAChallengeBtn,getApplicationContext());
     }
 
     private void setFocusAndNestedRecycler(){

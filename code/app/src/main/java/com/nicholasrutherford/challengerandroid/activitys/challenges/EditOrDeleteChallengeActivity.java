@@ -11,7 +11,7 @@ import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.activitys.MainActivity;
 import com.nicholasrutherford.challengerandroid.data.Challenge;
 import com.nicholasrutherford.challengerandroid.services.APIUtils;
-import com.nicholasrutherford.challengerandroid.services.ChallengeService;
+import com.nicholasrutherford.challengerandroid.services.challenges.ChallengeService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,4 +1,4 @@
-package com.nicholasrutherford.challengerandroid.services;
+package com.nicholasrutherford.challengerandroid.services.challenges;
 
 import com.nicholasrutherford.challengerandroid.data.Challenge;
 
