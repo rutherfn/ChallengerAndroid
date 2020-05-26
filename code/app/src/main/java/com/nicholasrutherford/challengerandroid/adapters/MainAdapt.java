@@ -32,7 +32,7 @@ public class MainAdapt extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MainViewHolder mainViewHolder = (MainViewHolder) holder;
-        mainViewHolder.main(position,listOfContent);
+        mainViewHolder.main(position,listOfContent, mContext);
     }
 
     @Override

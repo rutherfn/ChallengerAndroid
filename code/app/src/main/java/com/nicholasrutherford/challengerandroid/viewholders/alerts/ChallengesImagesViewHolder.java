@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nicholasrutherford.challengerandroid.R;
-import com.nicholasrutherford.challengerandroid.activitys.MainActivity;
 import com.nicholasrutherford.challengerandroid.activitys.challenges.AddAChallengeActivity;
-import com.nicholasrutherford.challengerandroid.adapters.MainAdapt;
+import com.nicholasrutherford.challengerandroid.activitys.challenges.EditOrDeleteChallengeActivity;
+import com.nicholasrutherford.challengerandroid.data.Const;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -37,8 +37,12 @@ public class ChallengesImagesViewHolder extends RecyclerView.ViewHolder {
         ivPlaceholderImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddAChallengeActivity.selectedImage = listOfImages.get(pos);
-                ((AddAChallengeActivity)mContext).dismissChallengeImageDialogAndSetImage();
+                Const.SELECTED_IMAGE = listOfImages.get(pos);
+                if(Const.CURRENT_ACTIVITY_NUMBER == 0) {
+                    ((AddAChallengeActivity) mContext).dismissChallengeImageDialogAndSetImage();
+                } else if(Const.CURRENT_ACTIVITY_NUMBER == 1) {
+                    ((EditOrDeleteChallengeActivity)mContext).dismissChallengeImageDialogAndSetImage();
+                }
             }
         });
     }

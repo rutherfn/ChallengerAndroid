@@ -1,5 +1,6 @@
 package com.nicholasrutherford.challengerandroid.viewholders;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
@@ -7,19 +8,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.activitys.challenges.ChallengesActivity;
+import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
+
 import java.util.List;
 
 public class MainViewHolder extends RecyclerView.ViewHolder {
 
     private TextView tvModel;
+    private TypefaceHelper typefaceHelper = new TypefaceHelper();
 
     public MainViewHolder(@NonNull View itemView) {
         super(itemView);
         tvModel = itemView.findViewById(R.id.tvModels);
     }
 
-     public void main(int pos, List<String> listOfContent) {
+     public void main(int pos, List<String> listOfContent, Context mContext) {
         tvModel.setText(listOfContent.get(pos));
+        typefaceHelper.setTypefaceOfBodyRegular(tvModel, mContext);
         modelOnClickListener(listOfContent,pos);
     }
 

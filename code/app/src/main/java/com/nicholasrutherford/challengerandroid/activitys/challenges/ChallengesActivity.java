@@ -20,9 +20,7 @@ import com.nicholasrutherford.challengerandroid.data.Challenge;
 import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
 import com.nicholasrutherford.challengerandroid.services.APIUtils;
 import com.nicholasrutherford.challengerandroid.services.challenges.ChallengeService;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,7 +67,8 @@ public class ChallengesActivity extends AppCompatActivity {
         Call<List<Challenge>> challenges = challengeService.getAllChallenges();
         challenges.enqueue(new Callback<List<Challenge>>() {
             @Override
-            public void onResponse(Call<List<Challenge>> call, Response<List<Challenge>> response) { ;
+            public void onResponse(Call<List<Challenge>> call, Response<List<Challenge>> response) {
+                System.out.println(response.body());
                 mainView = new ChallengesAdapt(getApplicationContext(), response.body());
                 rvMain.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 rvMain.setAdapter(mainView);

@@ -6,17 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.adapters.alerts.ChallengesImagesAdapt;
 import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +82,5 @@ public class ChallengeImagesDialogFragment extends DialogFragment {
         rvAlertChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
         rvAlertChallenges.setAdapter(challengesImagesAdapt);
     }
-
 
 }

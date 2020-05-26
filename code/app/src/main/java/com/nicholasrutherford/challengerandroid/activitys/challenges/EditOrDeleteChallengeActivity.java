@@ -3,15 +3,23 @@ package com.nicholasrutherford.challengerandroid.activitys.challenges;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import com.nicholasrutherford.challengerandroid.R;
-import com.nicholasrutherford.challengerandroid.activitys.MainActivity;
+import com.nicholasrutherford.challengerandroid.alerts.ChallengeImagesDialogFragment;
+import com.nicholasrutherford.challengerandroid.alerts.LoadingDialogFragment;
 import com.nicholasrutherford.challengerandroid.data.Challenge;
+import com.nicholasrutherford.challengerandroid.data.Const;
 import com.nicholasrutherford.challengerandroid.services.APIUtils;
 import com.nicholasrutherford.challengerandroid.services.challenges.ChallengeService;
+import com.squareup.picasso.Picasso;
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,10 +27,16 @@ import retrofit2.Response;
 
 public class EditOrDeleteChallengeActivity extends AppCompatActivity {
 
-    TextView tvEditChallenge;
-    EditText etTitle, etBody, etCategory, etUrl;
-    Button btnEditChallenge, btnDeleteChallenge;
-    ChallengeService challengeService;
+    private TextView tvEditChallenge, tvTitle, tvBody, tvCategory, tvUploadImage, tvId;
+    private EditText etTitle, etDescription;
+    private Button btnSaveChanges, btnRemoveChallenge;
+    private CircleImageView cvImageUpload;
+    private Spinner spCategory;
+    private ChallengeService challengeService;
+    private FragmentManager fm = getSupportFragmentManager();
+    private LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+    private ChallengeImagesDialogFragment challengeImagesDialogFragment = new ChallengeImagesDialogFragment();
+    private String categorySelectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,21 +47,62 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
     }
 
     private void main() {
-        setUpId();
+        setUpIds();
+        setUpConst();
         Intent intent = getIntent();
         fetchChallenge(intent.getExtras().getString("challengeTitle"));
+        setNewImageForChallenge();
+        updateChallenge();
         deleteChallenge();
-        // updateChallenge
     }
 
-    private void setUpId() {
+    private void setUpIds() {
         tvEditChallenge = findViewById(R.id.tvEditChallenge);
         etTitle = findViewById(R.id.etTitle);
-        etBody = findViewById(R.id.etBody);
-        etCategory = findViewById(R.id.etCategory);
-        etUrl = findViewById(R.id.etUrl);
-        btnEditChallenge = findViewById(R.id.btnEditChallenge);
-        btnDeleteChallenge = findViewById(R.id.btnDeleteChallenge);
+        tvTitle = findViewById(R.id.tvTitle);
+        tvBody = findViewById(R.id.tvBody);
+        tvCategory = findViewById(R.id.tvCategory);
+        tvUploadImage = findViewById(R.id.tvUploadImage);
+        etDescription = findViewById(R.id.etDescription);
+        btnSaveChanges = findViewById(R.id.btnSaveChanges);
+        btnRemoveChallenge = findViewById(R.id.btnRemoveChallenge);
+        cvImageUpload = findViewById(R.id.cvImageUpload);
+        spCategory = findViewById(R.id.spCategory);
+        tvId = findViewById(R.id.tvId);
+    }
+
+    private void setUpConst() {
+        Const.SELECTED_IMAGE = "";
+        Const.CURRENT_ACTIVITY_NUMBER = 1;
+    }
+
+    private void setSpinnerSelectedItem(String category) {
+        if(category.equals("Fitness")) {
+            spCategory.setSelection(0);
+        } else if(category.equals("Mental")) {
+            spCategory.setSelection(1);
+        } else if(category.equals("Cooking")) {
+            spCategory.setSelection(2);
+        }
+    }
+
+    private void initSpinner(String category) {
+        final String[] categories = new String[] {"Fitness", "Mental", "Cooking"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapter);
+        setSpinnerSelectedItem(category);
+        spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                categorySelectedItem = categories[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void fetchChallenge(String challengeName) {
@@ -55,7 +110,8 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
         challenge.enqueue(new Callback<Challenge>() {
             @Override
             public void onResponse(Call<Challenge> call, Response<Challenge> response) {
-                setEditText(response.body().title, response.body().body, response.body().category, response.body().url);
+                setEditText(response.body().title, response.body().body, response.body().url, response.body().id);
+                initSpinner(response.body().category);
             }
 
             @Override
@@ -66,16 +122,18 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
     }
 
     private void deleteChallenge() {
-        btnDeleteChallenge.setOnClickListener(new View.OnClickListener() {
+        btnRemoveChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int idOfChallenge = Integer.parseInt(tvEditChallenge.getText().toString());
-                Call<ResponseBody> rr = challengeService.deleteChallenge(idOfChallenge);
+                showLoadingDialog();
+                Integer id = Integer.parseInt(tvId.getText().toString());
+                Call<ResponseBody> rr = challengeService.deleteChallenge(id);
                 rr.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.code() == 200 || response.code() == 204) {
-                    startMainActivity();
+                    dismissLoadingDialog();
+                    startChallengeActivity();
                 }
             }
 
@@ -87,32 +145,83 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
         });
     }
 
-    private void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void startChallengeActivity() {
+        Intent intent = new Intent(this, ChallengesActivity.class);
         startActivity(intent);
         finish();
     }
 
-    private void setEditText(String title, String body, String category, String url) {
+    private void setEditText(String title, String body, String url, Integer id) {
         etTitle.setText(title);
-        etBody.setText(body);
-        etCategory.setText(category);
-        etUrl.setText(url);
+        etDescription.setText(body);
+        Picasso.get().load(url).into(cvImageUpload);
+        Const.CURRENT_IMAGE = url;
+        String valueOfId = Integer.toString(id);
+        tvId.setText(valueOfId);
+    }
+
+    private void setNewImageForChallenge() {
+        cvImageUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChallengeImageDialog();
+            }
+        });
     }
 
     private void updateChallenge() {
-        //        Call<Challenge> cc = challengeService.updateChallenge(13, chall);
-//        cc.enqueue(new Callback<Challenge>() {
-//            @Override
-//            public void onResponse(Call<Challenge> call, Response<Challenge> response) {
-//                System.out.println("It works");
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Challenge> call, Throwable t) {
-//                System.out.println("Error");
-//            }
-//        });
-//
+        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLoadingDialog();
+                Challenge challenge = new Challenge();
+                Integer id = Integer.parseInt(tvId.getText().toString());
+                challenge.setId(id);
+                challenge.setTitle(etTitle.getText().toString());
+                challenge.setBody(etDescription.getText().toString());
+                challenge.setCategory(categorySelectedItem);
+                if(Const.SELECTED_IMAGE.equals("")) {
+                    challenge.setUrl(Const.CURRENT_IMAGE);
+                } else {
+                    challenge.setUrl(Const.SELECTED_IMAGE);
+                }
+                updateChallengeApi(challenge,id);
+            }
+        });
+    }
+
+    private void updateChallengeApi(Challenge challenge, Integer id) {
+        Call<Challenge> cc = challengeService.updateChallenge(id, challenge);
+        cc.enqueue(new Callback<Challenge>() {
+            @Override
+            public void onResponse(Call<Challenge> call, Response<Challenge> response) {
+                dismissLoadingDialog();
+                startChallengeActivity();
+            }
+
+            @Override
+            public void onFailure(Call<Challenge> call, Throwable t) {
+                dismissLoadingDialog();
+                // network error
+            }
+        });
+
+    }
+
+    private void showLoadingDialog() {
+        loadingDialogFragment.show(fm, "LoadingDialog");
+    }
+
+    private void dismissLoadingDialog() {
+        loadingDialogFragment.dismiss();
+    }
+
+    private void showChallengeImageDialog() {
+        challengeImagesDialogFragment.show(fm, "challengeImageDialog");
+    }
+
+    public void dismissChallengeImageDialogAndSetImage() {
+        challengeImagesDialogFragment.dismiss();
+        Picasso.get().load(Const.SELECTED_IMAGE).into(cvImageUpload);
     }
 }

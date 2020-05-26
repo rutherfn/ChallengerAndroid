@@ -11,11 +11,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-
 import com.nicholasrutherford.challengerandroid.R;
-import com.nicholasrutherford.challengerandroid.activitys.MainActivity;
 import com.nicholasrutherford.challengerandroid.alerts.ChallengeImagesDialogFragment;
+import com.nicholasrutherford.challengerandroid.alerts.LoadingDialogFragment;
 import com.nicholasrutherford.challengerandroid.data.Challenge;
+import com.nicholasrutherford.challengerandroid.data.Const;
 import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
 import com.nicholasrutherford.challengerandroid.services.APIUtils;
 import com.nicholasrutherford.challengerandroid.services.challenges.ChallengeService;
@@ -33,12 +33,12 @@ public class AddAChallengeActivity extends AppCompatActivity {
     private CircleImageView cvImageUpload;
     private Challenge challenge = new Challenge();
     private ChallengeService challengeService;
-    private EditText etTitle, etBody, etCategory;
+    private EditText etTitle, etBody;
     private Button btnPostChallenge;
     private FragmentManager fm = getSupportFragmentManager();
     private ChallengeImagesDialogFragment challengeImagesDialogFragment =  new ChallengeImagesDialogFragment();
-    public static String selectedImage = "";
     private String categorySelectedItem;
+    private LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class AddAChallengeActivity extends AppCompatActivity {
 
     private void main() {
         setUpIds();
+        setConst();
         setTypeface();
         setUpDataForView();
         confirmChallenge();
@@ -58,8 +59,7 @@ public class AddAChallengeActivity extends AppCompatActivity {
     private void setUpIds() {
         tvAddChallenge = findViewById(R.id.tvAddChallenge);
         etTitle = findViewById(R.id.etTitle);
-        etBody = findViewById(R.id.etBody);
-        etCategory = findViewById(R.id.etCategory);
+        etBody = findViewById(R.id.etDescription);
         btnPostChallenge = findViewById(R.id.btnUploadChallenge);
         cvImageUpload = findViewById(R.id.cvImageUpload);
         spCategory = findViewById(R.id.spCategory);
@@ -67,6 +67,11 @@ public class AddAChallengeActivity extends AppCompatActivity {
         tvBody = findViewById(R.id.tvBody);
         tvCategory = findViewById(R.id.tvCategory);
         tvUploadImage = findViewById(R.id.tvUploadImage);
+    }
+
+    private void setConst() {
+        Const.SELECTED_IMAGE = "";
+        Const.CURRENT_ACTIVITY_NUMBER = 0;
     }
 
     private void setTypeface() {
@@ -78,8 +83,8 @@ public class AddAChallengeActivity extends AppCompatActivity {
         typefaceHelper.setTypefaceOfHeader(btnPostChallenge, getApplicationContext());
     }
 
-    public void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+    public void startChallengeActivity() {
+        Intent intent = new Intent(this, ChallengesActivity.class);
         startActivity(intent);
         finish();
     }
@@ -87,10 +92,10 @@ public class AddAChallengeActivity extends AppCompatActivity {
     private void setUpDataForView() {
         Picasso.get().load("https://user-images.githubusercontent.com/24874033/33524225-4ed3895e-d83e-11e7-8549-066c96bbab6c.png").into(cvImageUpload);
         initSpinner();
-        uploadImageFromLibrary();
+        uploadImageFromDefault();
     }
 
-    private void uploadImageFromLibrary() {
+    private void uploadImageFromDefault() {
         cvImageUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,19 +124,19 @@ public class AddAChallengeActivity extends AppCompatActivity {
     }
 
     private void confirmChallenge() {
-//        btnPostChallenge.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(!etTitle.getText().toString().equals("") && !etBody.getText().toString().equals("") && !etCategory.getText().toString().equals("") && !etUrl.getText().toString().equals("")) {
-//                    createNewChallenge(etTitle.getText().toString(), etBody.getText().toString(), etCategory.getText().toString(), etUrl.getText().toString());
-//                    clearUI();
-//                    startMainActivity();
-//                } else {
-//                    clearUI();
-//                    // post alert saying your missing something
-//                }
-//            }
-//        });
+        btnPostChallenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLoadingDialog();
+                System.out.println(etTitle.getText().toString());
+                if(!etTitle.getText().toString().equals("") && !etBody.getText().toString().equals("") && !categorySelectedItem.equals("") && !Const.SELECTED_IMAGE.equals("")) {
+                    createNewChallenge(etTitle.getText().toString(), etBody.getText().toString(), categorySelectedItem, Const.SELECTED_IMAGE);
+                } else {
+                    dismissLoadingDialog();
+                    // post alert saying your missing something
+                }
+            }
+        });
     }
 
     private void createNewChallenge(String title, String body, String category, String url) {
@@ -144,11 +149,14 @@ public class AddAChallengeActivity extends AppCompatActivity {
         tt.enqueue(new Callback<Challenge>() {
             @Override
             public void onResponse(Call<Challenge> call, Response<Challenge> response) {
-               // startMainActivity();
+                clearUI();
+                dismissLoadingDialog();
+                startChallengeActivity();
             }
 
             @Override
             public void onFailure(Call<Challenge> call, Throwable t) {
+                dismissLoadingDialog();
             }
         });
     }
@@ -156,7 +164,6 @@ public class AddAChallengeActivity extends AppCompatActivity {
     private void clearUI() {
         etTitle.getText().clear();
         etBody.getText().clear();
-        etCategory.getText().clear();
     }
 
     private void showChallengeImageDialog() {
@@ -165,7 +172,15 @@ public class AddAChallengeActivity extends AppCompatActivity {
 
     public void dismissChallengeImageDialogAndSetImage() {
         challengeImagesDialogFragment.dismiss();
-        Picasso.get().load(selectedImage).into(cvImageUpload);
+        Picasso.get().load(Const.SELECTED_IMAGE).into(cvImageUpload);
+    }
+
+    private void showLoadingDialog() {
+        loadingDialogFragment.show(fm, "loadingDialog");
+    }
+
+    private void dismissLoadingDialog() {
+        loadingDialogFragment.dismiss();
     }
 
 }

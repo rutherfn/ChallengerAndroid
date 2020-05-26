@@ -10,10 +10,10 @@
 
         <TextView
             android:id="@+id/tvAddContent"
-            android:text="Click On A Endpoint You Want To View"
+            android:text="Click On A Piece Of Data"
             android:layout_marginTop="10sp"
             android:layout_marginBottom="5sp"
-            android:textSize="20sp"
+            android:textSize="35sp"
             android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

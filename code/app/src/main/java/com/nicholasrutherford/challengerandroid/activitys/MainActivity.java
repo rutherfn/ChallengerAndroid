@@ -4,27 +4,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.activitys.accounts.LoginActivity;
 import com.nicholasrutherford.challengerandroid.adapters.MainAdapt;
-
+import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView rvMain;
-    TextView tvAddContent;
-    List<String> listOfContent = new ArrayList<>();
-    MainAdapt mainAdapt;
+    private RecyclerView rvMain;
+    private TextView tvAddContent;
+    private List<String> listOfContent = new ArrayList<>();
+    private MainAdapt mainAdapt;
+    private TypefaceHelper typefaceHelper = new TypefaceHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void main() {
         setUpIds();
+        setUpTypeface();
         setFocusAndNestedRecycler();
         initArrayList();
         initRecyclerAdapter();
@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
     private void setUpIds() {
         rvMain = findViewById(R.id.rvMain);
         tvAddContent = findViewById(R.id.tvAddContent);
+    }
+
+    private void setUpTypeface() {
+        typefaceHelper.setTypefaceOfHeader(tvAddContent, getApplicationContext());
     }
 
     private void setFocusAndNestedRecycler(){
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         listOfContent.add("* Challenges");
         listOfContent.add("* Branding");
         listOfContent.add("* Onboarding");
+        listOfContent.add("* Splash");
     }
 
     private void initRecyclerAdapter() {
