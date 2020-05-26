@@ -1,5 +1,6 @@
 package com.nicholasrutherford.challengerandroid.viewholders;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.activitys.challenges.EditOrDeleteChallengeActivity;
 import com.nicholasrutherford.challengerandroid.data.Challenge;
+import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -17,6 +19,7 @@ public class ChallengesViewHolder extends RecyclerView.ViewHolder {
 
     private CircleImageView ivChallenge;
     private ConstraintLayout cnsLayoutChallenge;
+    private TypefaceHelper typefaceHelper = new TypefaceHelper();
     private TextView tvChallengeTitle, tvChallengeDesc, tvChallengeCategory, editOrDeleteChallenge;
 
     public ChallengesViewHolder(@NonNull View itemView) {
@@ -29,8 +32,9 @@ public class ChallengesViewHolder extends RecyclerView.ViewHolder {
         editOrDeleteChallenge = itemView.findViewById(R.id.tvEditOrDeleteChallenge);
     }
 
-    public void main(final int pos, final List<Challenge> challenges) {
+    public void main(final int pos, final List<Challenge> challenges, Context mContext) {
         setUpUI(pos, challenges);
+        setUpTypeface(mContext);
         startEditChallengeActivity(pos,challenges);
     }
 
@@ -50,6 +54,13 @@ public class ChallengesViewHolder extends RecyclerView.ViewHolder {
         tvChallengeTitle.setText(challenges.get(pos).title);
         tvChallengeDesc.setText(challenges.get(pos).body);
         tvChallengeCategory.setText("Category: " + challenges.get(pos).category);
+    }
+
+    private void setUpTypeface(Context mContext) {
+        typefaceHelper.setTypefaceOfHeader(tvChallengeTitle, mContext);
+        typefaceHelper.setTypefaceOfBodyRegular(tvChallengeDesc,mContext);
+        typefaceHelper.setTypefaceOfHeaderRegular(tvChallengeCategory, mContext);
+        typefaceHelper.setTypefaceOfHeader(editOrDeleteChallenge, mContext);
     }
 
 }

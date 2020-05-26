@@ -110,6 +110,8 @@
         android:id="@+id/btnUploadChallenge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/button_edge_corners"
         android:layout_marginTop="20sp"
         android:text="Upload Challenge"
         app:layout_constraintStart_toStartOf="parent"

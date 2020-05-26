@@ -11,12 +11,14 @@
         <Button
             android:id="@+id/btnAddChallenge"
             android:text="Add A Challenge"
-            android:layout_marginTop="5sp"
+            android:background="@drawable/button_edge_corners"
+            android:textColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMain"
+            android:paddingBottom="7sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

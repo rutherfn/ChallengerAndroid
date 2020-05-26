@@ -30,7 +30,7 @@ public class ChallengesAdapt extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ChallengesViewHolder mainView = (ChallengesViewHolder) holder;
-        mainView.main(position, challenges);
+        mainView.main(position, challenges, mContext);
     }
 
     @Override

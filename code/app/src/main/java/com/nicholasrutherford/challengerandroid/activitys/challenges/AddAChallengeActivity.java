@@ -1,5 +1,6 @@
 package com.nicholasrutherford.challengerandroid.activitys.challenges;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import com.nicholasrutherford.challengerandroid.R;
+import com.nicholasrutherford.challengerandroid.activitys.accounts.LoginActivity;
 import com.nicholasrutherford.challengerandroid.alerts.ChallengeImagesDialogFragment;
 import com.nicholasrutherford.challengerandroid.alerts.LoadingDialogFragment;
 import com.nicholasrutherford.challengerandroid.data.Challenge;
@@ -105,7 +109,7 @@ public class AddAChallengeActivity extends AppCompatActivity {
     }
 
     private void initSpinner() {
-        final String[] categories = new String[] {"Fitness", "Mental", "Cooking"};
+        final String[] categories = new String[] {"Fitness", "Mental", "Cooking", "Software Development"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(adapter);
@@ -133,10 +137,24 @@ public class AddAChallengeActivity extends AppCompatActivity {
                     createNewChallenge(etTitle.getText().toString(), etBody.getText().toString(), categorySelectedItem, Const.SELECTED_IMAGE);
                 } else {
                     dismissLoadingDialog();
+                    alertStatingYourMissingData();
                     // post alert saying your missing something
                 }
             }
         });
+    }
+
+    private void alertStatingYourMissingData() {
+        AlertDialog alertDialog = new AlertDialog.Builder(AddAChallengeActivity.this).create();
+        alertDialog.setTitle("Sorry not all info was entered");
+        alertDialog.setMessage("All fields must be filled in, in order to add a challenge. Press OK to try again.");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     private void createNewChallenge(String title, String body, String category, String url) {

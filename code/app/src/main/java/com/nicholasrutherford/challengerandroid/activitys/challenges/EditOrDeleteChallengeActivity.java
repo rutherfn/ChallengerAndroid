@@ -16,6 +16,7 @@ import com.nicholasrutherford.challengerandroid.alerts.ChallengeImagesDialogFrag
 import com.nicholasrutherford.challengerandroid.alerts.LoadingDialogFragment;
 import com.nicholasrutherford.challengerandroid.data.Challenge;
 import com.nicholasrutherford.challengerandroid.data.Const;
+import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
 import com.nicholasrutherford.challengerandroid.services.APIUtils;
 import com.nicholasrutherford.challengerandroid.services.challenges.ChallengeService;
 import com.squareup.picasso.Picasso;
@@ -32,6 +33,7 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
     private Button btnSaveChanges, btnRemoveChallenge;
     private CircleImageView cvImageUpload;
     private Spinner spCategory;
+    private TypefaceHelper typefaceHelper = new TypefaceHelper();
     private ChallengeService challengeService;
     private FragmentManager fm = getSupportFragmentManager();
     private LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
@@ -48,6 +50,7 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
 
     private void main() {
         setUpIds();
+        setUpTypefaces();
         setUpConst();
         Intent intent = getIntent();
         fetchChallenge(intent.getExtras().getString("challengeTitle"));
@@ -71,6 +74,16 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
         tvId = findViewById(R.id.tvId);
     }
 
+    private void setUpTypefaces() {
+        typefaceHelper.setTypefaceOfHeader(tvEditChallenge,getApplicationContext());
+        typefaceHelper.setTypefaceOfHeaderRegular(tvBody,getApplicationContext());
+        typefaceHelper.setTypefaceOfHeaderRegular(tvCategory,getApplicationContext());
+        typefaceHelper.setTypefaceOfHeaderRegular(tvUploadImage,getApplicationContext());
+        typefaceHelper.setTypefaceOfHeader(btnSaveChanges,getApplicationContext());
+        typefaceHelper.setTypefaceOfHeader(btnRemoveChallenge,getApplicationContext());
+        typefaceHelper.setTypefaceOfBodyRegular(tvId,getApplicationContext());
+    }
+
     private void setUpConst() {
         Const.SELECTED_IMAGE = "";
         Const.CURRENT_ACTIVITY_NUMBER = 1;
@@ -83,11 +96,13 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
             spCategory.setSelection(1);
         } else if(category.equals("Cooking")) {
             spCategory.setSelection(2);
+        } else if(category.equals("Software Development")) {
+            spCategory.setSelection(3);
         }
     }
 
     private void initSpinner(String category) {
-        final String[] categories = new String[] {"Fitness", "Mental", "Cooking"};
+        final String[] categories = new String[] {"Fitness", "Mental", "Cooking", "Software Development"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(adapter);

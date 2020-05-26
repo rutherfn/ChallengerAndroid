@@ -2,6 +2,7 @@ package com.nicholasrutherford.challengerandroid.activitys.accounts;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.activitys.MainActivity;
+import com.nicholasrutherford.challengerandroid.activitys.challenges.ChallengesActivity;
 import com.nicholasrutherford.challengerandroid.alerts.LoadingDialogFragment;
 import com.nicholasrutherford.challengerandroid.data.Account;
+import com.nicholasrutherford.challengerandroid.helpers.TypefaceHelper;
 import com.nicholasrutherford.challengerandroid.services.APIUtils;
 import com.nicholasrutherford.challengerandroid.services.accounts.AccountService;
 import java.util.List;
@@ -25,13 +28,14 @@ import retrofit2.Response;
 public class LoginActivity  extends AppCompatActivity {
 
     // declarations
-    FragmentManager fm = getSupportFragmentManager();
-    LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
-    AccountService accountService;
-    CircleImageView ivChallenge;
-    TextView tvLogin;
-    EditText etUsername, etPassword;
-    Button logInBtn;
+    private FragmentManager fm = getSupportFragmentManager();
+    private LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
+    private AccountService accountService;
+    private CircleImageView ivChallenge;
+    private TextView tvLogin;
+    private EditText etUsername, etPassword;
+    private Button logInBtn;
+    private TypefaceHelper typefaceHelper = new TypefaceHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class LoginActivity  extends AppCompatActivity {
 
     private void main() {
         setUpIds();
+        setUpTypeface();
         logInToAccount();
     }
 
@@ -51,6 +56,10 @@ public class LoginActivity  extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         logInBtn = findViewById(R.id.logInBtn);
+    }
+
+    private void setUpTypeface() {
+        typefaceHelper.setTypefaceOfHeader(logInBtn, getApplicationContext());
     }
 
     private void clearUI() {
@@ -87,15 +96,23 @@ public class LoginActivity  extends AppCompatActivity {
 
     private void checkEditorText(Response<List<Account>> response) {
         if(response.body().get(1).username.equals(etUsername.getText().toString()) &&
-        response.body().get(1).password.equals(etPassword.getText().toString())) {
+        response.body().get(1).password.equals(etPassword.getText().toString()) ||
+                response.body().get(2).username.equals(etUsername.getText().toString()) &&
+                        response.body().get(2).password.equals(etPassword.getText().toString())) {
             dismissLoadingDialog();
-            startMainActivity();
+            startUpChallengeActivity();
             clearUI();
         } else  {
             dismissLoadingDialog();
             fireUpAlertForWrongCredentials();
             clearUI();
         }
+    }
+
+    private void startUpChallengeActivity() {
+        Intent intent = new Intent(this, ChallengesActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void startMainActivity() {

@@ -2,11 +2,8 @@ package com.nicholasrutherford.challengerandroid.viewholders.alerts;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.activitys.challenges.AddAChallengeActivity;
 import com.nicholasrutherford.challengerandroid.activitys.challenges.EditOrDeleteChallengeActivity;
@@ -15,9 +12,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChallengesImagesViewHolder extends RecyclerView.ViewHolder {
 
-    public ImageView ivPlaceholderImage;
+    private CircleImageView ivPlaceholderImage;
 
     public ChallengesImagesViewHolder(@NonNull View itemView) {
         super(itemView);
