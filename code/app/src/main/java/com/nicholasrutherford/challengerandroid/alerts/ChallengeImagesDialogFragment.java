@@ -66,7 +66,7 @@ public class ChallengeImagesDialogFragment extends DialogFragment {
         typefaceHelper.setTypefaceOfHeader(tvClickImage, getContext());
     }
 
-    private void initListOfImages() {
+    private void initListOfImages() { // will need to find a better solution down the line, maybe a image uploader?
         listOfImages.add("https://fitnessfor10.com/wp-content/uploads/2019/05/Fitness-for-10-Home-Licensing-Information.jpg");
         listOfImages.add("https://remakemyplate.com/wp-content/uploads/2019/08/Keto-Cooking-Challenge-650-x-476.jpg");
         listOfImages.add("https://snpha.org/images/MH.png");

@@ -4,13 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.viewholders.MainViewHolder;
-
 import java.util.List;
 
 public class MainAdapt extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
@@ -39,4 +36,5 @@ public class MainAdapt extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     public int getItemCount() {
         return listOfContent.size();
     }
+
 }

@@ -4,13 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.nicholasrutherford.challengerandroid.R;
 import com.nicholasrutherford.challengerandroid.viewholders.alerts.ChallengesImagesViewHolder;
-
 import java.util.List;
 
 public class ChallengesImagesAdapt extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -43,4 +40,5 @@ public class ChallengesImagesAdapt extends RecyclerView.Adapter<RecyclerView.Vie
             return listOfImages.size();
         }
     }
+
 }

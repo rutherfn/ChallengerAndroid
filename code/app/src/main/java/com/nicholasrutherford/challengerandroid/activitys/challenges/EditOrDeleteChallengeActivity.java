@@ -90,14 +90,19 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
     }
 
     private void setSpinnerSelectedItem(String category) {
-        if(category.equals("Fitness")) {
-            spCategory.setSelection(0);
-        } else if(category.equals("Mental")) {
-            spCategory.setSelection(1);
-        } else if(category.equals("Cooking")) {
-            spCategory.setSelection(2);
-        } else if(category.equals("Software Development")) {
-            spCategory.setSelection(3);
+        switch (category) {
+            case "Fitness":
+                spCategory.setSelection(0);
+                break;
+            case "Mental":
+                spCategory.setSelection(1);
+                break;
+            case "Cooking":
+                spCategory.setSelection(2);
+                break;
+            case "Software Development":
+                spCategory.setSelection(3);
+                break;
         }
     }
 
@@ -239,4 +244,5 @@ public class EditOrDeleteChallengeActivity extends AppCompatActivity {
         challengeImagesDialogFragment.dismiss();
         Picasso.get().load(Const.SELECTED_IMAGE).into(cvImageUpload);
     }
+
 }

@@ -34,13 +34,17 @@ public class MainViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 String modelClicked = listOfContent.get(pos);
 
-                if(modelClicked.equals("* Challenges")) {
-                    Intent intent = new Intent(v.getContext(), ChallengesActivity.class);
-                    v.getContext().startActivity(intent);
-                } else if(modelClicked.equals("* Branding")) {
+                switch (modelClicked) {
+                    case "* Challenges":
+                        Intent intent = new Intent(v.getContext(), ChallengesActivity.class);
+                        v.getContext().startActivity(intent);
+                        break;
+                    case "* Branding":
 
-                } else if(modelClicked.equals("* Onboarding")) {
-                    // st
+                        break;
+                    case "* Onboarding":
+                        // st
+                        break;
                 }
             }
         });

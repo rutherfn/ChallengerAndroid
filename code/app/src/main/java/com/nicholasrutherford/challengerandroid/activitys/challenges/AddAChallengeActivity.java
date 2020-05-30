@@ -10,12 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import com.nicholasrutherford.challengerandroid.R;
-import com.nicholasrutherford.challengerandroid.activitys.accounts.LoginActivity;
 import com.nicholasrutherford.challengerandroid.alerts.ChallengeImagesDialogFragment;
 import com.nicholasrutherford.challengerandroid.alerts.LoadingDialogFragment;
 import com.nicholasrutherford.challengerandroid.data.Challenge;

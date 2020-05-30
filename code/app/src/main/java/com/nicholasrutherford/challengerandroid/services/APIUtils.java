@@ -9,7 +9,7 @@ public class APIUtils {
     private APIUtils(){
     };
 
-    public static final String API_URL = "https://mighty-brook-50625.herokuapp.com/challenger/";
+    private static final String API_URL = "https://mighty-brook-50625.herokuapp.com/challenger/";
 
     public static ChallengeService getChallengeService(){
         return RetrofitClient.getClient(API_URL).create(ChallengeService.class);

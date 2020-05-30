@@ -27,7 +27,6 @@ import retrofit2.Response;
 
 public class LoginActivity  extends AppCompatActivity {
 
-    // declarations
     private FragmentManager fm = getSupportFragmentManager();
     private LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
     private AccountService accountService;
